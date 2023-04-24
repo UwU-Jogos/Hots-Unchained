@@ -1,6 +1,6 @@
 # Heroes of the Storm Draft Tool
 
-Welcome to the **Heroes of the Storm Draft Tool**! This application allows you to create custom 5v5 drafts for Heroes of the Storm, providing you with randomly selected heroes and their talents builds. The tool ensures a balanced team composition by generating a tank, two ranged DPS, a melee DPS, a bruiser, and a healer.
+Welcome to the **Heroes of the Storm Draft Tool**! This application allows you to create custom 5v5 drafts for Heroes of the Storm, providing you with randomly selected heroes and their talents builds while also giving randomly selected map options. The tool ensures a balanced team composition by generating a tank, two ranged DPS, a melee DPS, a bruiser, and a healer.
 
 Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 
@@ -8,12 +8,12 @@ Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 
 - Randomly selected heroes covering a balanced team composition
 - Randomly generated builds for each hero
+- Randomly selected map options to play
 - Two-stage draft process with hero and map selections
 - Captain-based hero selection and banning
 - Reroll functionality
 - Map banning for strategic depth
 - Copy tool for easy sharing of talents
-- Point suggestion system for tournaments
 
 ## How it works
 
@@ -38,6 +38,8 @@ Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 9. Captain B selects 1 hero
 
 The draft is now complete! Use the copy tool button to share the selected talents with your team.
+
+**You can also reroll during both stages, rerolls will randomly assign a new set of 6 heroes**
 
 ### Hero Selection
 
