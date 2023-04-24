@@ -1,4 +1,4 @@
-# Heroes of the Storm Unchained Draft Tool
+# Heroes of the Storm Draft Tool
 
 Welcome to the **Heroes of the Storm Draft Tool**! This application allows you to create custom 5v5 drafts for Heroes of the Storm, providing you with randomly generated heroes and their talents. The tool ensures a balanced team composition by generating a tank, two ranged DPS, a melee DPS, a bruiser, and a healer.
 
@@ -13,6 +13,8 @@ Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 - Reroll functionality for hero options
 - Map banning for strategic depth
 - Copy tool for easy sharing of talents
+- Point suggestion system for tournaments
+- Seamless integration with Heroes of the Storm in-game chat
 
 ## How it works
 
@@ -44,6 +46,14 @@ The draft is now complete! Use the copy tool button to share the selected talent
 
 Whenever a hero is selected from the pool of 6 heroes, a new one is generated to maintain the available options.
 
+## Points Suggestion for Tournaments
+
+To encourage players to stick to the given builds during tournaments, organizers can implement a point system. Each wrong talent selected could lead to a loss of points upon victory. Consistent rule-breaking may result in further punishment. This system helps maintain the integrity of the draft tool and ensures a fair and competitive environment.
+
+## Share Tool Button
+
+The share tool button allows players to easily paste the build into the Heroes of the Storm in-game chat. The build will appear as a talent set for the given character. To use the shared talent set, click on the talent set text, then the gear icon, and finally copy the talent set to position number 1 (or the desired position). In the game, simply select the favorited talents to follow the drafted build.
+
 ## Conclusion
 
-Experience a new level of drafting strategy with the Heroes of the Storm Unchained Draft Tool. Create balanced teams with diverse hero options and map selections, and share your drafted talents with your teammates. Give it a try and elevate your Heroes of the Storm gameplay!
+Experience a new level of drafting strategy with the Heroes of the Storm Draft Tool. Create balanced teams with diverse hero options and map selections, and share your drafted talents with your teammates. Implement a point system for tournaments to maintain fair competition and enjoy seamless integration with the in-game chat. Give it a try and elevate your Heroes of the Storm gameplay!
