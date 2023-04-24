@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Hero Talent Builder</title>
+    <style>
+        body {
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            background-color: #2e222f;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        button {
+            width: 100px;
+            height: 50px;
+            background-color: #0eaf9b;
+            color: #ffffff;
+            font-size: 22px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 2px solid #165a4c;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #165a4c;
+            border: 2px solid #0eaf9b;
+        }
+
+        
+        #left-draft-container,
+        #right-draft-container {
+            transition: background-color 0.3s;
+        }
+
+        .card {
+            background-color: #625565;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 250px;
+            height: 300px;
+            border: 6px solid #000000;
+        }
+
+        .card .firstRow {
+            background-image: linear-gradient(180deg, #7f708a 96%, #625565 100%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            height: 80%;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: -2%;
+            border-radius: 5% 5% 0% 0%;
+        }
+
+        .card .hero {
+            width:  36%;
+            height: auto;
+            margin: 1px 7px;
+            border: 5px solid #706279;
+            border-radius: 3%;
+            pointer-events: none;
+        }
+
+        .card .firstRow img {
+            width:  36%;
+            height: auto;
+            margin: 1px 7px;
+            border: 5px solid #706279;
+            border-radius: 3%;
+            pointer-events: none;
+        }
+
+        .card .talents {
+          display: flex;
+          margin: 10px;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-evenly;
+          align-items: space-evenly;
+          padding: 2% 0;
+          border-radius: 3%;
+        }
+
+        .card .talents img {
+            width: 30%;
+            height: auto;
+            margin: 0px 0;
+            border: 3px solid #4a404c;
+            pointer-events: none;
+        }
+        
+                .dragging {
+                    opacity: 0.5;
+                }
+        
+        .map-icon {
+            width: 40%;
+            border-radius: 15px;
+            border: 6px solid black;
+            /* height: auto; */
+            margin: 0px 10px;
+        }
+
+        .map-icon:hover {
+            border-color: red;
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1z7Z5X/p7Kw8Df7Kpp8z3J8f+ua7Kw1TIq0XWvk" crossorigin="anonymous">
+</head>
+<body>
+    <div id="full-screen" style="width: 100vw; height: 100vh; display: flex; justify-content: center; flex-direction: row; align-items: center;">
+        <div id="left-draft" style="width: 25%; height: 600px; padding-right: 20px; display: flex; justify-content: flex-start; align-items: center;">
+            <div id="left-draft-container" style="padding-left: 15px; height: 1000px; gap: 16px; display: flex; justify-content: center; flex-direction: column; flex-wrap: wrap; align-items: center;"></div>
+            <img id="left-draft-icon" src="copy.svg" style="width: 35px; position: absolute; top: 20%; left: 25%; cursor: pointer;" />
+        </div>
+        <div id="middle-section" style="width: 50%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+            <div id="buttons" style="width: 100%; display: flex; flex-direction: row; margin-top: 20px; justify-content: space-around; align-items: center;">
+                <button id="btn-lft" class="reroll-button"> <span class="reroll-count"></span></button>
+                <img src="https://uwu.games/logo.png"/>
+                <button id="btn-rgt" class="reroll-button"> <span class="reroll-count"></span></button>  
+            </div>
+            <div id="cards-container" style="width: 100%; padding-top: 30px; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 20px;"></div>
+            <div id="map-container" style="width: 100%; padding-top: 20px; height: auto; display: flex; justify-content: center; align-items: center"></div>
+        </div>
+        <div id="right-draft" style="width: 25%; height: 600px; padding-left: 20px; display: flex; justify-content: flex-end; align-items: center;">
+            <div id="right-draft-container" style="padding-right: 15px; height: 1000px; gap: 16px; display: flex; justify-content: center; flex-direction: column; flex-wrap: wrap-reverse; align-items: center;"></div>
+            <img id="right-draft-icon" src="copy.svg" style="width: 35px; position: absolute; top: 20%; right: 25%; cursor: pointer;" />
+          </div>
+        </div>
+    <script src="heroes_talents.js"></script>
+    <script src="hero_roles.js"></script>
+    <script src="heroes.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
