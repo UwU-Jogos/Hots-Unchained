@@ -58,3 +58,7 @@ The share tool button allows players to easily paste the build into the Heroes o
 ## Conclusion
 
 Experience a new level of drafting strategy with the Heroes of the Storm Unchained Draft Tool. Create balanced teams with diverse hero options and map selections, and share your drafted talents with your teammates. Implement a point system for tournaments to maintain fair competition. Give it a try and elevate your Heroes of the Storm gameplay!
+
+## To do
+
+- Hover talents the talents and show it's description
