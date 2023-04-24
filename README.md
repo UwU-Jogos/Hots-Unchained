@@ -39,7 +39,7 @@ Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 
 The draft is now complete! Use the copy tool button to share the selected talents with your team.
 
-** You can also reroll during both stages, rerolls will randomly assign a new set of 6 heroes **
+**You can also reroll during both stages, rerolls will randomly assign a new set of 6 heroes**
 
 ### Hero Selection
 
