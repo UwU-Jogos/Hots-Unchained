@@ -1,6 +1,6 @@
-# Heroes of the Storm Draft Tool
+# Heroes of the Storm Unchained Draft Tool
 
-Welcome to the **Heroes of the Storm Draft Tool**! This application allows you to create custom 5v5 drafts for Heroes of the Storm, providing you with randomly selected heroes and their talents builds while also giving randomly selected map options. The tool ensures a balanced team composition by generating a tank, two ranged DPS, a melee DPS, a bruiser, and a healer.
+Welcome to the **Heroes of the Storm Unchained Draft Tool**! This application allows you to create custom 5v5 drafts for Heroes of the Storm, providing you with randomly selected heroes and their talents builds while also giving randomly selected map options. The tool ensures a balanced team composition by generating a tank, two ranged DPS, a melee DPS, a bruiser, and a healer.
 
 Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 
@@ -57,4 +57,4 @@ The share tool button allows players to easily paste the build into the Heroes o
 
 ## Conclusion
 
-Experience a new level of drafting strategy with the Heroes of the Storm Draft Tool. Create balanced teams with diverse hero options and map selections, and share your drafted talents with your teammates. Implement a point system for tournaments to maintain fair competition. Give it a try and elevate your Heroes of the Storm gameplay!
+Experience a new level of drafting strategy with the Heroes of the Storm Unchained Draft Tool. Create balanced teams with diverse hero options and map selections, and share your drafted talents with your teammates. Implement a point system for tournaments to maintain fair competition. Give it a try and elevate your Heroes of the Storm gameplay!
