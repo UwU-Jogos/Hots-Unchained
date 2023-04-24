@@ -26,8 +26,6 @@ Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 4. Captain A selects 2 heroes
 5. Captain B selects 1 hero
 
-During this stage, captains have the option to reroll any of the 6 heroes displayed.
-
 ### Stage Two
 
 1. Three maps are randomly generated
