@@ -14,7 +14,6 @@ Try it out now at https://uwu-jogos.github.io/Hots-Unchained/
 - Map banning for strategic depth
 - Copy tool for easy sharing of talents
 - Point suggestion system for tournaments
-- Seamless integration with Heroes of the Storm in-game chat
 
 ## How it works
 
@@ -54,4 +53,4 @@ The share tool button allows players to easily paste the build into the Heroes o
 
 ## Conclusion
 
-Experience a new level of drafting strategy with the Heroes of the Storm Draft Tool. Create balanced teams with diverse hero options and map selections, and share your drafted talents with your teammates. Implement a point system for tournaments to maintain fair competition and enjoy seamless integration with the in-game chat. Give it a try and elevate your Heroes of the Storm gameplay!
+Experience a new level of drafting strategy with the Heroes of the Storm Draft Tool. Create balanced teams with diverse hero options and map selections, and share your drafted talents with your teammates. Implement a point system for tournaments to maintain fair competition. Give it a try and elevate your Heroes of the Storm gameplay!
