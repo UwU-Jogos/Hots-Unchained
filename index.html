@@ -6,6 +6,11 @@
     <title>Random Hero Talent Builder</title>
     <style>
       
+* {
+    box-sizing: border-box;
+}
+
+      
 body {
     overflow: hidden;
     font-family: Arial, sans-serif;
@@ -13,20 +18,21 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     height: 100vh;
+    width: 100vw;
     background-color: #2e222f;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    margin: 0;
+    padding: 0;
+        font-size: calc(14px + 0.5vw); /* Responsive font size */
 }
 
-.selectable {
-    user-select: text;
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-}
+
+
 
 h1 {
     color: #ffffff;
@@ -54,16 +60,17 @@ button:hover {
 .card {
     flex: 0 0 auto;
     background-color: #625565;
-    border-radius: 12px;
+    border-radius: 1.2vmin;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 200px;
-    height: 225px;
-    border: 6px solid #000000;
+    width: 20vmin;
+    height: 22.5vmin;
+    border: 0.6vmin solid #000000;
     transition: border 0.3s ease-in-out;
     position: relative;
+    
     z-index: 1;
 }
 
@@ -104,20 +111,21 @@ button:hover {
     align-items: center;
     margin-bottom: -2%;
     border-radius: 5% 5% 0% 0%;
+    
 }
 
 .card .hero, .card .firstRow img {
     width: 36%;
     height: auto;
-    margin: 1px 7px;
-    border: 5px solid #706279;
+    margin: 0.1vmin 0.7vmin;
+    border: 0.5vmin solid #706279;
     border-radius: 3%;
     pointer-events: none;
 }
 
 .card .talents {
     display: flex;
-    margin: 10px;
+    margin: 1vmin;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -129,15 +137,16 @@ button:hover {
 .card .talents img {
     width: 30%;
     height: auto;
-    margin: 0px 0;
-    border: 3px solid #4a404c;
+    margin: 0;
+    border: 0.3vmin solid #4a404c;
     pointer-events: none;
 }
 
+
 .map-icon {
     position: relative;
-    width: 400px; /* Largura fixa */
-    height: 400px; /* Altura fixa */
+    width: 40vmin; /* Largura fixa */
+    height: 40vmin; /* Altura fixa */
     border-radius: 15px;
     border: 6px solid black;
     margin: 10px;
@@ -145,6 +154,7 @@ button:hover {
     z-index: 1;
     object-fit: cover; /* Garante que a imagem cubra todo o espaço */
     object-position: center; /* Centraliza a imagem */
+    overflow: hidden;
 }
 
 
@@ -204,11 +214,11 @@ button:hover {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    padding: 20px 0;
-    padding-bottom: 30px;
+    gap: 2vmin;
+    padding: 2vmin 0;
     overflow-x: auto;
     overflow-y: hidden;
+    padding-bottom: 5vmin;
 }
 
 #cards-container::-webkit-scrollbar {
@@ -233,7 +243,7 @@ button:hover {
     height: 30%;
     display: flex;
     justify-content: space-between;
-     position: relative;
+    position: relative;
 }
 
 .role-icon-container {
@@ -250,8 +260,8 @@ button:hover {
 }
 
 .role-icon {
-    width: 100%;
-    height: 100%;
+    width: 4.5vmin;
+    height: auto;
     border: 2px solid #706279;
     border-radius: 50%;
     background-color: #2e222f; /* Cor de fundo para destacar do fundo da página */
@@ -268,12 +278,12 @@ button:hover {
 }
 
 .card-placeholder {
-    width: 120px;
-    height: 150px;
-    border: 2px dashed #706279;
-    border-radius: 12px;
+    width: 12vmin;
+    height: 15vmin;
+    border: 0.2vmin dashed #706279;
+    border-radius: 1.2vmin;
     background-color: rgba(98, 85, 101, 0.3);
-    margin: 5px;
+    margin: 0.5vmin;
 }
 
 #left-draft-container, #right-draft-container {
@@ -283,11 +293,12 @@ button:hover {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
+    gap: 1vmin;
+    padding: 1vmin;
     position: relative;
     z-index: 1;
 }
+
 
 #left-draft-controls, #right-draft-controls {
     position: absolute;
@@ -309,9 +320,8 @@ right: 80%;
 }
 
 #left-draft-icon, #right-draft-icon {
-    width: 35px;
-    cursor: pointer;
-    margin-bottom: 10px;
+    width: 3.5vmin;
+    margin-bottom: 1vmin;
 }
 
 #left-turn-text, #right-turn-text {
@@ -322,8 +332,9 @@ right: 80%;
 }
 
 #left-draft-container .card, #right-draft-container .card {
-    width: 120px;
-    height: 150px;
+    width: 13vmin;
+    height: 16vmin;
+    pointer-events: none;
 }
 
 #left-draft-container .card .firstRow,
@@ -371,7 +382,7 @@ right: 80%;
 .draft-row {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 1vmin;
     width: 100%;
     position: relative;
     z-index: 1;
@@ -394,28 +405,29 @@ right: 80%;
 }
 
 #choosen-map-container {
-  width: 200px; /* Adjust as needed */
-  height: 200px; /* Adjust as needed */
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 30vmin;
+    min-width: 100px;
+    min-height: 100px;
+    height: 20vmin;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #choosen-map-container .map-icon {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 3px solid #8a2be2;
+    width: 100%;
+    height: 100%;
+    border-radius: 1vmin;
+    border: 0.3vmin solid #8a2be2;
 }
 
 .reroll-button {
-    width: 70px;
-    height: 35px;
+    width: 7vmin;
+    height: 3.5vmin;
     border-radius: 5%;
     border: none;
-    font-size: 16px;
+    font-size: 1.6vmin;
     font-weight: bold;
     cursor: pointer;
     display: flex;
@@ -436,9 +448,9 @@ right: 80%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 20px;
-    border-radius: 10px;
-    font-size: 24px;
+    padding: 2vmin;
+    border-radius: 1vmin;
+    font-size: 2.4vmin;
     font-weight: bold;
     text-align: center;
     z-index: 1000;
@@ -447,8 +459,49 @@ right: 80%;
 
 
 
+
+@media (max-width: 600px) or (max-height: 600px) {
+    .card {
+        width: 15vmin;
+        height: 16.875vmin;
+    }
+
+    #choosen-map-container {
+        width: 15vmin;
+        height: 15vmin;
+    }
+
+    .reroll-button {
+        width: 5vmin;
+        height: 2.5vmin;
+        font-size: 1.2vmin;
+    }
+}
+
+/* Media query for very large screens */
+@media (min-width: 1920px) and (min-height: 1080px) {
+    .card {
+        width: 25vmin;
+        height: 28.125vmin;
+    }
+
+    #choosen-map-container {
+        width: 25vmin;
+        height: 25vmin;
+    }
+
+    .reroll-button {
+        width: 9vmin;
+        height: 4.5vmin;
+        font-size: 2vmin;
+    }
+}
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1z7Z5X/p7Kw8Df7Kpp8z3J8f+ua7Kw1TIq0XWvk" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 </head>
 <body>
     <div id="turn-message"></div>
@@ -509,5 +562,11 @@ right: 80%;
     <script src="hero_roles.js"></script>
     <script src="heroes.js"></script>
     <script src="app.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flexibility/2.0.1/flexibility.js"></script>
+    <script>
+        flexibility(document.documentElement);
+    </script>
 </body>
 </html>

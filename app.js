@@ -10,7 +10,6 @@ let randomMaps = [];
 let reroll = [1, 1];
 
 
-
 document.addEventListener('DOMContentLoaded', function () {
   // Prevenir comportamento padrão de arrastar em elementos não-arrastáveis
   document.addEventListener('dragstart', function (event) {
