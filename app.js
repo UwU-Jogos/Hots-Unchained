@@ -9,6 +9,24 @@ let currentTurn = null;
 let randomMaps = [];
 let reroll = [1, 1];
 
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Prevenir comportamento padrão de arrastar em elementos não-arrastáveis
+  document.addEventListener('dragstart', function (event) {
+    if (!event.target.classList.contains('card')) {
+      event.preventDefault();
+    }
+  });
+
+  // Adicionar evento para prevenir seleção de texto no container de cards
+  document.getElementById("cards-container").addEventListener("mousedown", function (event) {
+    if (event.target === this) {
+      event.preventDefault();
+    }
+  });
+});
+
 const maps = [
   "alterac-pass",
   "battlefield-of-eternity",
@@ -52,18 +70,70 @@ function sortHeroesByRole(heroes) {
 
 
 function displayTeamCards(teamCards, containerId) {
-  const sortedCards = sortHeroesByRole(teamCards)
+  const sortedCards = sortHeroesByRole(teamCards);
   const container = document.getElementById(containerId);
-  container.innerHTML = ""; // Clear previous cards
 
-  for (let i = 0; i < sortedCards.length; i++) {
-    const talentCode = sortedCards[i];
-    const card = createTalentCard();
-    displayTalentImages(talentCode, card, containerId);
-    card.classList.add('card');
+  if (containerId === "left-draft-container" || containerId === "right-draft-container") {
+    // Get existing rows or create them if they don't exist
+    let topRow = container.querySelector('.draft-row:first-child');
+    let bottomRow = container.querySelector('.draft-row:last-child');
+
+    if (!topRow) {
+      topRow = document.createElement("div");
+      topRow.className = "draft-row";
+      container.appendChild(topRow);
+    }
+
+    if (!bottomRow) {
+      bottomRow = document.createElement("div");
+      bottomRow.className = "draft-row";
+      container.appendChild(bottomRow);
+    }
+
+    // Clear existing cards, keeping placeholders
+    topRow.querySelectorAll('.card').forEach(card => card.remove());
+    bottomRow.querySelectorAll('.card').forEach(card => card.remove());
+
+    // Ensure there are enough placeholders
+    while (topRow.children.length < 2) {
+      const placeholder = document.createElement("div");
+      placeholder.className = "card-placeholder";
+      topRow.appendChild(placeholder);
+    }
+    while (bottomRow.children.length < 3) {
+      const placeholder = document.createElement("div");
+      placeholder.className = "card-placeholder";
+      bottomRow.appendChild(placeholder);
+    }
+
+    // Add sorted cards, replacing placeholders
+    for (let i = 0; i < sortedCards.length; i++) {
+      const talentCode = sortedCards[i];
+      const card = createTalentCard();
+      displayTalentImages(talentCode, card, containerId);
+      card.classList.add('card');
+
+      if (i < 2) {
+        topRow.children[i].replaceWith(card);
+      } else {
+        bottomRow.children[i - 2].replaceWith(card);
+      }
+    }
+  } else {
+    // For cards-container, keep the original layout
+    container.innerHTML = ""; // Clear previous cards
+    for (let i = 0; i < sortedCards.length; i++) {
+      const talentCode = sortedCards[i];
+      const card = createTalentCard();
+      displayTalentImages(talentCode, card, containerId);
+      card.classList.add('card');
       container.appendChild(card);
+    }
   }
 }
+
+
+
 
 // Function to generate a random integer between min and max
 function getRandomInt(min, max) {
@@ -77,8 +147,8 @@ function getRandomHero() {
 }
 
 function remove_from_list(list, value) {
-  for(var i = 0; i < list.length; i++) {
-    if(list[i] === value) {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i] === value) {
       list.splice(i, 1);
       i--;
     }
@@ -157,6 +227,24 @@ function createTalentCard() {
   const card = document.createElement("div");
   card.className = "card";
   card.setAttribute("draggable", "true");
+
+  card.addEventListener("mousedown", function (event) {
+    // Prevenir a propagação do evento para evitar seleção de texto
+    event.stopPropagation();
+  });
+
+  card.addEventListener("dragstart", function (event) {
+    this.classList.add('dragging');
+    dragOrigin = this.closest('#left-draft-container, #right-draft-container, #cards-container').id;
+    draggedCard = this.getAttribute("data-talent-code");
+  });
+
+  card.addEventListener("dragend", function (event) {
+    this.classList.remove('dragging');
+    draggedCard = null;
+    dragOrigin = null;
+  });
+
   return card;
 }
 
@@ -175,13 +263,12 @@ function displayTalentImages(talentCode, card, containerId) {
   const talents = heroes_talents[heroName];
   const talentNumbers = talentCode.match(/\d+/g)[0];
 
-  const talentCard = card;
-  talentCard.innerHTML = "";
+  card.innerHTML = "";
 
   // Create the first row of the card
   const firstRow = document.createElement("div");
   firstRow.className = "firstRow";
-  talentCard.appendChild(firstRow);
+  card.appendChild(firstRow);
 
   // Add the hero image
   const heroImg = document.createElement("img");
@@ -201,15 +288,13 @@ function displayTalentImages(talentCode, card, containerId) {
   // Create the container for the other talents
   const talentsContainer = document.createElement("div");
   talentsContainer.className = "talents";
-  talentCard.appendChild(talentsContainer);
+  card.appendChild(talentsContainer);
 
-  // Add the other talent images
-  for (let i = 0; i < talentNumbers.length; i++) {
-    if (i === 3) {
-      continue;
-    }
-    const talentIndex = parseInt(talentNumbers[i]) - 1;
-    const talent = talents[i][talentIndex];
+  // Add the other talent images in 2 rows of 3
+  const talentOrder = [0, 1, 2, 4, 5, 6]; // Skip index 3 (ultimate)
+  for (let i = 0; i < talentOrder.length; i++) {
+    const talentIndex = parseInt(talentNumbers[talentOrder[i]]) - 1;
+    const talent = talents[talentOrder[i]][talentIndex];
     const img = document.createElement("img");
     img.src = getImageSrc(talent);
     img.alt = talent;
@@ -218,18 +303,45 @@ function displayTalentImages(talentCode, card, containerId) {
 
   card.setAttribute("data-talent-code", talentCode);
 
-  card.addEventListener("dragstart", (event) => {
+  // Add the role icon only for cards in the cards-container
+  if (containerId === "cards-container") {
+    const roleIconContainer = document.createElement("div");
+    roleIconContainer.className = "role-icon-container";
+
+    const roleIcon = document.createElement("img");
+    roleIcon.src = getRoleImageSrc(heroName);
+    roleIcon.alt = `${heroRoles[heroName]} role`;
+    roleIcon.className = "role-icon";
+
+    roleIconContainer.appendChild(roleIcon);
+    card.appendChild(roleIconContainer);
+  }
+
+  // Remover os event listeners existentes, se houver
+  card.removeEventListener("dragstart", card.dragStartHandler);
+  card.removeEventListener("dragend", card.dragEndHandler);
+
+  // Adicionar novos event listeners
+  card.dragStartHandler = (event) => {
     dragOrigin = containerId;
     draggedCard = talentCode;
     event.target.classList.add("dragging");
-  });
-
-  card.addEventListener("dragend", (event) => {
+  };
+  card.dragEndHandler = (event) => {
     event.target.classList.remove("dragging");
     draggedCard = null;
     dragOrigin = null;
-  });
+  };
+
+  card.addEventListener("dragstart", card.dragStartHandler);
+  card.addEventListener("dragend", card.dragEndHandler);
 }
+
+function getRoleImageSrc(heroName) {
+  const role = heroRoles[heroName];
+  return `roleportraits/${role}.png`;
+}
+
 function getNeededRoles() {
   const requiredRoles = {
     'melee': 1,
@@ -300,7 +412,7 @@ document.getElementById("btn-lft").addEventListener("click", () => {
 });
 
 document.getElementById("btn-rgt").addEventListener("click", () => {
-  if ((reroll[1] > 0) && (currentTurn !== "left"))  {
+  if ((reroll[1] > 0) && (currentTurn !== "left")) {
     reroll[1] -= 1
     const cardsContainer = document.getElementById("cards-container");
     cardsContainer.innerHTML = ""; // Clear previous cards
@@ -314,7 +426,10 @@ document.getElementById("btn-rgt").addEventListener("click", () => {
 function displayMapIcons(containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = ""; // Clear previous content
-  
+
+  // Add map-container class
+  container.classList.add('map-container');
+
   // Display the maps of that index
   randomMaps.forEach((index) => {
     const mapIcon = document.createElement("img");
@@ -344,23 +459,29 @@ function handleMapBan(mapIndex) {
   mapRoutine[0] -= 1;
   if (mapRoutine[0] === 0) {
     mapRoutine.shift();
-    currentTurn = currentTurn === 'right' ? 'left' : 'right' 
+    currentTurn = currentTurn === 'right' ? 'left' : 'right';
     if (mapRoutine.length === 0) {
       const cardsContainer = document.getElementById("cards-container");
       cardsContainer.innerHTML = ""; // Clear previous cards
-      midCards.length = 0
-      rerollCards()
+      cardsContainer.classList.remove('map-container'); // Remove map-container class
+      midCards.length = 0;
+      rerollCards();
 
-      reroll = [1, 1]
-      updateRerollButtons()
-      // Switch to the next pick phase
+      reroll = [1, 1];
+      updateRerollButtons();
       console.log("finished map phase");
-      displayMapIcons("map-container")
+
+      // Display the chosen map
+      displayChosenMap(randomMaps[0]);
+
       displayTeamCards(midCards, "cards-container");
     }
   }
   updateDraftHighlight();
 }
+
+
+
 
 
 
@@ -370,8 +491,8 @@ function handleTeamDrop(event, targetDrop) {
   if (draggedCard === null) {
     return;
   }
-  if (randomMaps.length > 1) {  
-    // handleMapBan(targetDrop);
+  if (randomMaps.length > 1) {
+
     return;
   }
   // Check if the current turn matches the target drop container or if the current turn is null
@@ -388,7 +509,7 @@ function handleTeamDrop(event, targetDrop) {
 
       if (dragOrigin === "cards-container") {
         midCards = midCards.filter((code) => code !== draggedCard);
-        midNewCard()
+        midNewCard();
         displayTeamCards(midCards, dragOrigin);
       } else if (dragOrigin === "left-draft-container") {
         lftCards = lftCards.filter((code) => code !== draggedCard);
@@ -403,7 +524,7 @@ function handleTeamDrop(event, targetDrop) {
       if ((currentTurn === null) && (targetDrop != "cards-container")) {
         currentTurn = targetDrop === "left-draft-container" ? 'left' : 'right';
       }
-      pickRoutine[0][0] -= 1
+      pickRoutine[0][0] -= 1;
       // If current player's pick turn has ended
       if (pickRoutine[0][0] === 0) {
         // Remove current turn from turn list
@@ -413,7 +534,7 @@ function handleTeamDrop(event, targetDrop) {
         // If a phase ends
         if (pickRoutine[0].length === 0) {
           // Creates 3 maps
-          currentTurn = currentTurn === 'right' ? 'left' : 'right' 
+          currentTurn = currentTurn === 'right' ? 'left' : 'right';
           reroll = [0, 0];
           pickRoutine.shift();
           if (pickRoutine.length === 0) {
@@ -425,7 +546,7 @@ function handleTeamDrop(event, targetDrop) {
             return;
           } else {
             // reroll = [0, 0]
-            mapRoutine = [1, 1]
+            mapRoutine = [1, 1];
             while (randomMaps.length < 3) {
               let randomNumber = Math.floor(Math.random() * maps.length);
               if (!randomMaps.includes(randomNumber)) {
@@ -434,14 +555,16 @@ function handleTeamDrop(event, targetDrop) {
             }
           }
           displayMapIcons("cards-container");
-          console.log("finished first pick phase")
+          console.log("finished first pick phase");
         }
       }
     }
   }
-  updateDraftHighlight()
-  updateRerollButtons()
+  updateDraftHighlight();
+  updateRerollButtons();
 }
+
+
 
 
 
@@ -469,39 +592,47 @@ document.getElementById("cards-container").addEventListener("drop", (event) => {
   handleTeamDrop(event, "cards-container");
 });
 
-async function copy(message) {
+async function copyTalents(teamSide) {
   try {
+    const draftContainer = document.getElementById(`${teamSide}-draft-container`);
+    const cards = Array.from(draftContainer.querySelectorAll('.card'));
+    const talents = cards.map((card) => card.getAttribute("data-talent-code"));
+
+    let message = `${teamSide.charAt(0).toUpperCase() + teamSide.slice(1)} Team - \n`;
+    talents.forEach((code) => {
+      if (code) {
+        message += `:ghostboogie: ${code}\n`;
+      }
+    });
+
     await navigator.clipboard.writeText(message);
-    console.log("Talent codes copied to clipboard.");
+
+    // Provide visual feedback
+    const icon = document.getElementById(`${teamSide}-draft-icon`);
+    const originalSrc = icon.src;
+    icon.src = "check.svg"; // Assume you have a check icon
+    setTimeout(() => {
+      icon.src = originalSrc;
+    }, 2000);
+
+    console.log(`${teamSide} team talents copied to clipboard.`);
   } catch (err) {
-    console.error("Failed to copy talent codes to clipboard.", err);
+    console.error(`Failed to copy ${teamSide} team talents to clipboard.`, err);
+
+    // Provide error feedback
+    const icon = document.getElementById(`${teamSide}-draft-icon`);
+    const originalSrc = icon.src;
+    icon.src = "error.svg"; // Assume you have an error icon
+    setTimeout(() => {
+      icon.src = originalSrc;
+    }, 2000);
   }
 }
 
-// Add event listeners for the draft icons
-document.getElementById("left-draft-icon").addEventListener("click", () => {
-  const draft = document.getElementById("left-draft-container");
-  const cards = Array.from(draft.children);
-  const talents = cards.map((card) => card.getAttribute("data-talent-code"));
-  let message = `Left Team - \n`;
-  talents.forEach((code, index) => {
-    message += `:ghostboogie: ${code}\n`;
-  })
-  console.log(message);
-  copy(message)
-});
+// Update event listeners for the draft icons
+document.getElementById("left-draft-icon").addEventListener("click", () => copyTalents("left"));
+document.getElementById("right-draft-icon").addEventListener("click", () => copyTalents("right"));
 
-document.getElementById("right-draft-icon").addEventListener("click", () => {
-  const draft = document.getElementById("right-draft-container");
-  const cards = Array.from(draft.children);
-  const talents = cards.map((card) => card.getAttribute("data-talent-code"));
-  let message = `Right Team - \n`;
-  talents.forEach((code, index) => {
-    message += `:ghostboogie: ${code}\n`
-  })
-  console.log(message);
-  copy(message)
-});
 
 function updateRerollButtons() {
   const leftRerollButton = document.getElementById("btn-lft");
@@ -515,7 +646,7 @@ function updateRerollButtons() {
     leftRerollButton.style.backgroundColor = "gray";
     leftRerollButton.style.cursor = "not-allowed";
   }
-  leftRerollButton.querySelector(".reroll-count").textContent = reroll[0];
+  // leftRerollButton.querySelector(".reroll-count").textContent = reroll[0];
 
   // Update right reroll button
   if (reroll[1] > 0 && currentTurn !== "left") {
@@ -525,7 +656,7 @@ function updateRerollButtons() {
     rightRerollButton.style.backgroundColor = "gray";
     rightRerollButton.style.cursor = "not-allowed";
   }
-  rightRerollButton.querySelector(".reroll-count").textContent = reroll[1];
+  //rightRerollButton.querySelector(".reroll-count").textContent = reroll[1];
 }
 
 // Call the updateRerollButtons function initially
@@ -537,12 +668,39 @@ function rerollCards() {
     midNewCard()
   }
   displayTeamCards(midCards, "cards-container");
+  document.getElementById("cards-container").classList.remove('map-container');
 }
 
 rerollCards()
 
+// Substitua a função updateDraftHighlight existente por esta versão atualizada
 function updateDraftHighlight() {
   const body = document.body;
+  const turnMessage = document.getElementById("turn-message");
+
+  // Remova as linhas que manipulam leftTurnText e rightTurnText, pois não serão mais usadas
+
+  let message = "";
+  if (randomMaps.length > 1) { // Fase de banimento de mapas
+    if (currentTurn === "left") {
+      message = "Left team turn to ban";
+    } else if (currentTurn === "right") {
+      message = "Right team turn to ban";
+    }
+  } else { // Fase de escolha de heróis
+    if (currentTurn === "left") {
+      message = "Left team turn to pick";
+    } else if (currentTurn === "right") {
+      message = "Right team turn to pick";
+    }
+  }
+
+  if (message) {
+    turnMessage.textContent = message;
+    turnMessage.style.display = "block";
+  } else {
+    turnMessage.style.display = "none";
+  }
 
   if (currentTurn === "left") {
     body.style.backgroundImage = "linear-gradient(90deg, #22262f 0%, #22262f 25%, #2e222f 35%, #2e222f 100%)";
@@ -551,4 +709,22 @@ function updateDraftHighlight() {
   } else {
     body.style.backgroundImage = "linear-gradient(90deg, #22262f 0%, #22262f 25%, #2e222f 35%, #2e222f 65%, #22262f 75%, #22262f 100%)";
   }
+}
+
+// Remova ou comente as seguintes linhas no seu HTML:
+// <div id="left-turn-text" style="display: none;">YOUR TURN TO PICK</div>
+// <div id="right-turn-text" style="display: none;">YOUR TURN TO PICK</div>
+
+
+
+function displayChosenMap(mapIndex) {
+  const choosenMapContainer = document.getElementById("choosen-map-container");
+  choosenMapContainer.innerHTML = ""; // Clear previous content
+
+  const mapIcon = document.createElement("img");
+  mapIcon.src = 'map_icons/' + maps[mapIndex] + '.jpg';
+  mapIcon.alt = `Chosen Map: ${maps[mapIndex]}`;
+  mapIcon.className = "map-icon";
+
+  choosenMapContainer.appendChild(mapIcon);
 }
